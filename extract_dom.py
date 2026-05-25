@@ -11,10 +11,22 @@ PASSWORD = os.getenv("PASSWORD")
 BASE_URL = os.getenv("BASE_URL")
 
 PAGES = [
-    {"name": "login",                "url": f"{BASE_URL}/login"},
-    {"name": "dashboard",            "url": f"{BASE_URL}/dashboard"},
-    {"name": "organisation_listing", "url": f"{BASE_URL}/organisations"},
-    {"name": "platform_listing",     "url": f"{BASE_URL}/platforms"},
+    {
+        "name": "login",
+        "url": "https://admin-test.granitestack.ai/admin/login"
+    },
+    {
+        "name": "dashboard",
+        "url": "https://admin-test.granitestack.ai/admin/dashboard/503/Demmo"
+    },
+    {
+        "name": "organisation_listing",
+        "url": "https://admin-test.granitestack.ai/admin/business-board"
+    },
+    {
+        "name": "platform_listing",
+        "url": "https://admin-test.granitestack.ai/admin/platforms"
+    },
 ]
 
 async def extract_elements(page):
