@@ -1,0 +1,9 @@
+.env
+.mcp.json
+__pycache__/
+.pytest_cache/
+reports/
+*.pyc
+.idea/
+data/
+node_modules/
