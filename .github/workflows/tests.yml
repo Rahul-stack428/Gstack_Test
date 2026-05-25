@@ -1,0 +1,67 @@
+name: Gstack Test Automation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 9 * * *'  # runs every day at 9AM IST
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1 - Get the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2 - Setup Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # Step 3 - Install dependencies
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Step 4 - Install Playwright browsers
+      - name: Install browsers
+        run: playwright install --with-deps chromium
+
+      # Step 5 - Run tests
+      - name: Run Playwright tests
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+        run: |
+          pytest tests/ \
+            --html=reports/report.html \
+            --self-contained-html \
+            -v
+
+      # Step 6 - Upload test report always
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-report
+          path: reports/report.html
+
+      # Step 7 - AI analysis only when tests fail
+      - name: AI failure analysis
+        if: failure()
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python utils/ai_analyzer.py
+
+      # Step 8 - Upload AI report
+      - name: Upload AI analysis report
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: ai-failure-analysis
+          path: reports/ai_report.txt
