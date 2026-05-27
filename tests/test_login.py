@@ -5,7 +5,7 @@ import pytest
 
 
 def test_create_project(playwright:Playwright):
-    browser = playwright.chromium.launch(headless=False)
+    browser = playwright.chromium.launch()
     context = browser.new_context()
     page = context.new_page()
     page.goto("https://admin-test.granitestack.ai/admin/login")
