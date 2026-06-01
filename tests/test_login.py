@@ -4,7 +4,7 @@ import pytest_playwright
 import pytest
 
 
-def test_create_project(playwright:Playwright):
+def test_platform_creation(playwright:Playwright):
     browser = playwright.chromium.launch()
     context = browser.new_context()
     page = context.new_page()
